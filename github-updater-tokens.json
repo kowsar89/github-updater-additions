@@ -1,0 +1,10 @@
+[
+  {
+    "name": "github_access_token",
+    "token": "enter_token_id_here",
+  },
+  {
+    "name": "github_plugin",
+    "token": "enter_token_id_here",
+  }
+]
