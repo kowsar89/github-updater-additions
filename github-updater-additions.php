@@ -29,6 +29,22 @@ namespace Fragen\GitHub_Updater;
 
 use Fragen\Singleton;
 
+// @kowsar
+add_filter( 'github_updater_set_options', function () { // api tokens
+
+	$config = file_get_contents( __DIR__ . '/github-updater-tokens.json' );
+	$config = json_decode( $config, true );
+
+	$updater = array();
+
+	foreach ( $config as $repo ) {
+		$updater[$repo['name']] = $repo['token'];
+	}
+
+	return $updater;
+} );
+
+
 add_filter(
 	'github_updater_additions', function( $false, $repos, $type ) {
 		$config    = file_get_contents( __DIR__ . '/github-updater-additions.json' );
@@ -114,24 +130,24 @@ class Additions {
 			switch ( $repo['type'] ) {
 				case 'github_plugin':
 				case 'github_theme':
-					$addition['slug']                                  = $repo['slug'];
-					$addition[ 'GitHub ' . ucwords( $type ) . ' URI' ] = $repo['uri'];
-					break;
+				$addition['slug']                                  = $repo['slug'];
+				$addition[ 'GitHub ' . ucwords( $type ) . ' URI' ] = $repo['uri'];
+				break;
 				case 'bitbucket_plugin':
 				case 'bitbucket_theme':
-					$addition['slug']                                     = $repo['slug'];
-					$addition[ 'Bitbucket ' . ucwords( $type ) . ' URI' ] = $repo['uri'];
-					break;
+				$addition['slug']                                     = $repo['slug'];
+				$addition[ 'Bitbucket ' . ucwords( $type ) . ' URI' ] = $repo['uri'];
+				break;
 				case 'gitlab_plugin':
 				case 'gitlab_theme':
-					$addition['slug']                                  = $repo['slug'];
-					$addition[ 'GitLab ' . ucwords( $type ) . ' URI' ] = $repo['uri'];
-					break;
+				$addition['slug']                                  = $repo['slug'];
+				$addition[ 'GitLab ' . ucwords( $type ) . ' URI' ] = $repo['uri'];
+				break;
 				case 'gitea_plugin':
 				case 'gitea_theme':
-					$addition['slug']                                 = $repo['slug'];
-					$addition[ 'Gitea ' . ucwords( $type ) . ' URI' ] = $repo['uri'];
-					break;
+				$addition['slug']                                 = $repo['slug'];
+				$addition[ 'Gitea ' . ucwords( $type ) . ' URI' ] = $repo['uri'];
+				break;
 			}
 
 			$this->add_to_github_updater[ $repo['slug'] ] = array_merge( $additions[ $repo['slug'] ], $addition );
